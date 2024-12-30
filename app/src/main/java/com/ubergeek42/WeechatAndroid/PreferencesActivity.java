@@ -46,10 +46,10 @@ import okhttp3.HttpUrl;
 import static androidx.preference.FontManagerKt.IMPORT_FONTS_REQUEST_CODE;
 import static androidx.preference.ThemeManagerKt.IMPORT_THEMES_REQUEST_CODE;
 import static com.ubergeek42.WeechatAndroid.utils.Constants.*;
-import static com.ubergeek42.WeechatAndroid.utils.Toaster.ErrorToast;
 import static com.ubergeek42.WeechatAndroid.utils.ThemeFix.fixLightStatusAndNavigationBar;
 import static com.ubergeek42.WeechatAndroid.views.FullScreenActivityControllerKt.applyNavigationBarScrim;
 import static com.ubergeek42.WeechatAndroid.views.FullScreenActivityControllerKt.onSystemBarsInsetsChanged;
+import static com.ubergeek42.WeechatAndroid.views.snackbar.SnackbarsKt.showSnackbar;
 
 public class PreferencesActivity extends AppCompatActivity implements PreferenceFragmentCompat.OnPreferenceStartScreenCallback {
     final static private String KEY = "key";
@@ -300,11 +300,11 @@ public class PreferencesActivity extends AppCompatActivity implements Preference
                 }
             } catch (Exception e) {
                 valid = false;
-                ErrorToast.show(R.string.error__etc__prefix, e.getMessage());
+                showSnackbar(this, e);
             }
 
             if (!valid && errorResource != -1)
-                ErrorToast.show(errorResource);
+                showSnackbar(this, errorResource);
             return valid;
          }
 
