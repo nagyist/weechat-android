@@ -2,6 +2,7 @@ package com.ubergeek42.WeechatAndroid.views
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Color
 import android.os.Build
 import android.util.TypedValue
 import android.view.View
@@ -72,5 +73,23 @@ fun Activity.applyNavigationBarScrim(@ColorInt opaqueColor: Int) {
         window.navigationBarColor = opaqueColor
     } else {
         window.navigationBarColor = setAlphaComponent(opaqueColor, 0xCC) // 80%
+    }
+}
+
+
+// As of API 35 `isStatusBarContrastEnforced` is deprecated but still has an effect. What?
+//
+// Note that similar effect can be achieved
+// by applying a no-op `setOnApplyWindowInsetsListener` to the `rootView` of the layout.
+//
+// See https://developer.android.com/about/versions/15/behavior-changes-15#edge-to-edge
+@Suppress("DEPRECATION")
+fun Activity.makeSystemBarsTransparent() {
+    if (Build.VERSION.SDK_INT >= 29) {
+        window.isNavigationBarContrastEnforced = false
+        window.isStatusBarContrastEnforced = false
+    } else {
+        window.navigationBarColor = Color.TRANSPARENT
+        window.statusBarColor = Color.TRANSPARENT
     }
 }
