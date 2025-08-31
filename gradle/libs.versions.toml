@@ -3,11 +3,11 @@ androidlogger = "1.3.6"
 androidx-annotation = "1.9.1"
 androidx-appcompat = "1.7.1"
 androidx-core = "1.16.0" # 1.17.0 needs compileSdk ≥ 36
-androidx-emoji2 = "1.5.0"
+androidx-emoji2 = "1.6.0"
 androidx-legacy = "1.0.0"
 androidx-lifecycle = "2.9.4"
 androidx-preference = "1.2.1"
-androidx-room = "2.7.2"
+androidx-room = "2.8.3"
 androidx-sharetarget = "1.2.0"
 
 # Bumping AspectJ to either 1.9.22, 1.9.22.1, or 1.9.24, the currently latest version,
