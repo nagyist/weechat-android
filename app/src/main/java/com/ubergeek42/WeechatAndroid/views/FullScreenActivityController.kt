@@ -1,10 +1,15 @@
 package com.ubergeek42.WeechatAndroid.views
 
+import android.app.Activity
 import android.content.Context
+import android.os.Build
 import android.util.TypedValue
 import android.view.View
+import androidx.annotation.ColorInt
+import androidx.core.graphics.ColorUtils.setAlphaComponent
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.ubergeek42.WeechatAndroid.R
 
 
 // Using `getInsetsIgnoringVisibility` for system bars as those can be temporarily hidden at times,
@@ -50,5 +55,22 @@ fun Context.getActionBarHeight(): Int {
         TypedValue.complexToDimensionPixelSize(typedValue.data, resources.displayMetrics)
     } else {
         0
+    }
+}
+
+
+// API ≥ 35:
+//   Setting a solid navigation bar color will *only* apply it to the buttoned navigation,
+//   resulting in semi-transparent scrim with system-default transparency of 80%.
+//   Gesture hint scrim is *not* affected by it.
+//
+// API < 35:
+//   The color is set as is for every navigation mode.
+@Suppress("DEPRECATION") // Works for now
+fun Activity.applyNavigationBarScrim(@ColorInt opaqueColor: Int) {
+    if (Build.VERSION.SDK_INT >= 35) {
+        window.navigationBarColor = opaqueColor
+    } else {
+        window.navigationBarColor = setAlphaComponent(opaqueColor, 0xCC) // 80%
     }
 }

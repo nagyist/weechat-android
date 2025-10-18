@@ -5,12 +5,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.preference.CheckBoxPreference;
@@ -24,6 +28,7 @@ import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.RingtonePreferenceFix;
 import androidx.preference.ThemeManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ubergeek42.WeechatAndroid.media.Config;
 import com.ubergeek42.WeechatAndroid.service.P;
@@ -35,12 +40,16 @@ import com.ubergeek42.WeechatAndroid.views.ViewUtilsKt;
 
 import java.util.Set;
 
+import kotlin.Unit;
 import okhttp3.HttpUrl;
 
 import static androidx.preference.FontManagerKt.IMPORT_FONTS_REQUEST_CODE;
 import static androidx.preference.ThemeManagerKt.IMPORT_THEMES_REQUEST_CODE;
 import static com.ubergeek42.WeechatAndroid.utils.Constants.*;
 import static com.ubergeek42.WeechatAndroid.utils.Toaster.ErrorToast;
+import static com.ubergeek42.WeechatAndroid.utils.ThemeFix.fixLightStatusAndNavigationBar;
+import static com.ubergeek42.WeechatAndroid.views.FullScreenActivityControllerKt.applyNavigationBarScrim;
+import static com.ubergeek42.WeechatAndroid.views.FullScreenActivityControllerKt.onSystemBarsInsetsChanged;
 
 public class PreferencesActivity extends AppCompatActivity implements PreferenceFragmentCompat.OnPreferenceStartScreenCallback {
     final static private String KEY = "key";
@@ -57,6 +66,16 @@ public class PreferencesActivity extends AppCompatActivity implements Preference
         setSupportActionBar(findViewById(R.id.toolbar));
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
+
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        applyNavigationBarScrim(this, getColor(R.color.primary));
+        fixLightStatusAndNavigationBar(this);
+
+        View layout = findViewById(R.id.preferences);
+        onSystemBarsInsetsChanged(layout, insets -> {
+            layout.setPadding(insets.left, insets.top, insets.right, layout.getPaddingBottom());
+            return Unit.INSTANCE;
+        });
 
         // this is exactly the place for the following statement. why? no idea.
         if (savedInstanceState != null)
@@ -119,6 +138,19 @@ public class PreferencesActivity extends AppCompatActivity implements Preference
         private Preference sslGroup = null;
         private Preference sshGroup = null;
         private Preference wsPath = null;
+
+        @NonNull @Override public RecyclerView onCreateRecyclerView(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent, @Nullable Bundle savedInstanceState) {
+            RecyclerView rv = super.onCreateRecyclerView(inflater, parent, savedInstanceState);
+
+            rv.setClipToPadding(false);
+
+            onSystemBarsInsetsChanged(rv, insets -> {
+                rv.setPadding(rv.getPaddingLeft(), rv.getPaddingTop(), rv.getPaddingRight(), insets.bottom);
+                return Unit.INSTANCE;
+            });
+
+            return rv;
+        }
 
         // don't check permissions if preference is null, instead use resumePreference
         @Override public void onDisplayPreferenceDialog(Preference preference) {
