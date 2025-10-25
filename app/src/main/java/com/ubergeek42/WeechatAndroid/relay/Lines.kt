@@ -178,7 +178,7 @@ class Lines {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val namesThatSpokeLast: Iterator<String> = iterator {
+    val namesThatSpokeLast: Iterator<String> get() = iterator {
         filtered.asReversed().forEach { line ->
             if (line.type === LineSpec.Type.IncomingMessage) {
                 line.nick?.let { yield(it) }
