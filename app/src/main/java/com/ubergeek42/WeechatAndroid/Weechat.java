@@ -5,7 +5,9 @@ package com.ubergeek42.WeechatAndroid;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
+import android.os.StrictMode;
 
 import com.ubergeek42.WeechatAndroid.media.CachePersist;
 import com.ubergeek42.WeechatAndroid.notifications.IconsKt;
@@ -45,6 +47,12 @@ public class Weechat extends Application {
         NotificatorKt.initializeNotificator(this);
         EventBus.builder().logNoSubscriberMessages(false).eventInheritance(false).installDefaultEventBus();
         EventBus.getDefault().postSticky(new Events.StateChangedEvent(EnumSet.of(STATE.STOPPED)));
+
+        // Just in case, detect potentially unsafe intents in the debug builds.
+        // See https://developer.android.com/about/versions/15/behavior-changes-15#safer-intents
+        if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectUnsafeIntentLaunch().build());
+        }
     }
 
 
