@@ -93,13 +93,13 @@ public class FullScreenEditTextPreference extends EditTextPreference implements 
             toolbar.inflateMenu(MENU);
             toolbar.setNavigationOnClickListener(v -> tryClosing());
             toolbar.setOnMenuItemClickListener(item -> {
-                switch (item.getItemId()) {
-                    case MENU_SAVE:
-                        saveAndDismiss();
-                        return true;
-                    case MENU_DEFAULT:
-                        resetToDefaultValue();
-                        return true;
+                int itemId = item.getItemId();
+                if (itemId == MENU_SAVE) {
+                    saveAndDismiss();
+                    return true;
+                } else if (itemId == MENU_DEFAULT) {
+                    resetToDefaultValue();
+                    return true;
                 }
                 return false;
             });
