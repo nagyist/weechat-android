@@ -98,8 +98,8 @@ class Lines {
             if (marker > 0) add(marker, MarkerLine)
 
             if (mayHaveSquiggleLines) {
-                while (isNotEmpty() && first() is SquiggleLine) removeFirst()
-                while (isNotEmpty() && last() is SquiggleLine) removeLast()
+                while (isNotEmpty() && first() is SquiggleLine) removeAt(0) // removeFirst
+                while (isNotEmpty() && last() is SquiggleLine) removeAt(lastIndex) // removeLast
                 removeConsecutiveElementsLeavingFirst { it is SquiggleLine }
             }
         }

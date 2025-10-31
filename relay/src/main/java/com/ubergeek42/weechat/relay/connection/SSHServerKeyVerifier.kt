@@ -156,7 +156,7 @@ enum class KeyType(val displayName: String, vararg algorithms: String) {
 
         knownHosts[Server.fromHostAndPort(host, port)]?.let { identities ->
             val serverAlgorithms = identities.mapNotNull { it.keyType?.algorithms }.flatten()
-            HostKeyAlgorithms.preferred.reversed().forEach {
+            HostKeyAlgorithms.preferred.asReversed().forEach {
                 if (it in serverAlgorithms) result.moveToFront(it)
             }
         }

@@ -58,7 +58,7 @@ class History : java.io.Serializable {
             val last = messages.getOrNull(0)?.content
             if (last?.equalsIgnoringUselessSpans(content) != true) {
                 messages.add(0, message)
-                if (messages.size > MAX_HISTORY_LENGTH) messages.removeLast()
+                if (messages.size > MAX_HISTORY_LENGTH) messages.removeAt(messages.lastIndex) // removeLast
                 return true
             }
         }
