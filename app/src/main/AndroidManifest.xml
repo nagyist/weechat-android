@@ -142,6 +142,13 @@
 
 
         <activity android:name=".PreferencesActivity" />
+
+        <!-- Note that this *needs* to be `adjustResize`,
+        as otherwise, e.g. if using `adjustNothing`,
+        IME inset changes are not propagated to the listener on APIs < 30. -->
+        <activity android:name="androidx.preference.StrategyPreferenceActivity"
+            android:windowSoftInputMode="adjustResize" />
+
         <activity android:name=".copypaste.CopyActivity"
             android:windowSoftInputMode="adjustNothing|stateAlwaysHidden" />
         <activity android:name=".WeechatAboutActivity"
