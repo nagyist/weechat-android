@@ -31,7 +31,7 @@ class Suri private constructor(
         @Throws(FileNotFoundException::class, IOException::class, SecurityException::class)
         fun fromUri(uri: Uri): Suri {
             val mediaType = resolver.getType(uri)?.toMediaTypeOrNull()
-            val fileSize = resolver.openFileDescriptor(uri, "r")?.statSize ?: -1L
+            val fileSize = resolver.openAssetFileDescriptor(uri, "r")?.length ?: -1L
             val fileName = makeFileNameWithExtension(uri, mediaType)
             return Suri(uri, mediaType, fileName, fileSize)
         }
