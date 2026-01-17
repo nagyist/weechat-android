@@ -2,6 +2,7 @@ package com.ubergeek42.WeechatAndroid.upload
 
 import android.net.Uri
 import androidx.annotation.MainThread
+import com.ubergeek42.WeechatAndroid.BuildConfig
 import com.ubergeek42.cats.Kitty
 import com.ubergeek42.cats.Root
 import okhttp3.*
@@ -18,9 +19,19 @@ private const val SEGMENT_SIZE = 4096L
 private const val TIMEOUT = 30L
 
 
+private val userAgentInterceptor = Interceptor { chain ->
+    chain.proceed(
+        chain.request()
+            .newBuilder()
+            .header("User-Agent", "Weechat-Android/${BuildConfig.VERSION_NAME} okhttp/${OkHttp.VERSION}")
+            .build()
+    )
+}
+
 private val client = OkHttpClient.Builder()
         .writeTimeout(TIMEOUT, TimeUnit.SECONDS)
         .readTimeout(TIMEOUT, TimeUnit.SECONDS)
+        .addInterceptor(userAgentInterceptor)
         .build()
 
 
