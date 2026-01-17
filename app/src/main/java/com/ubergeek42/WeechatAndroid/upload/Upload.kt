@@ -97,9 +97,16 @@ class Upload(
     private fun execute(): String {
         call!!.execute().use { response ->
             if (response.isSuccessful) {
-                return response.body!!.string()
+                return response.body.string()
             } else {
-                throw IOException("Unexpected code ${response.code}")
+                val beginningOfBody = try {
+                    response.peekBody(256).string()
+                } catch (e: IOException) {
+                    throw IOException("Unexpected error ${response.code}: ${response.message}\n\n<Error reading body>\n")
+                            .apply { addSuppressed(e) }
+                }
+
+                throw IOException("Unexpected error ${response.code}: ${response.message}\n\n$beginningOfBody\n")
             }
         }
     }
