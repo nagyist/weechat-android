@@ -180,6 +180,7 @@ fun View.showSnackbar(text: CharSequence, snackbarBuilder: SnackbarBuilder? = nu
 
     val snackbar = Snackbar.make(this, text, Snackbar.LENGTH_LONG)
     snackbar.setMaxLines(4)
+    snackbar.reactToInsetChangesProperly()
     snackbar.behavior = SwipeDismissBehaviorFix()
 
     baseSnackbarBuilder?.invoke(snackbar)

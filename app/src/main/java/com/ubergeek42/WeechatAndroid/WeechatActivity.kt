@@ -171,7 +171,6 @@ class WeechatActivity : AppCompatActivity(), CutePageChangeListener,
             ui.toolbarContainer.updatePadding(top = insets.top, left = insets.left, right = insets.right)
             ui.navigationPadding.updateDimensions(height = insets.bottom)
             ui.pager.updateMargins(bottom = insets.bottom)
-            snackbarPositionController.setInsets(insets)
         }
 
         setSupportActionBar(ui.toolbar)
