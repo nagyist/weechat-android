@@ -2,7 +2,9 @@ package com.ubergeek42.WeechatAndroid.copypaste
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
 import com.ubergeek42.WeechatAndroid.R
 import com.ubergeek42.WeechatAndroid.relay.BufferList
@@ -45,6 +47,21 @@ class CopyActivity : EditTextActivity(allowSoftKeyboard = false) {
                 Select::id.find(menuItem.itemId)?.let { setBody(it) }
                 true
             }
+        }
+
+        // On Oreo (API 26, 27) redrawing text can lead to the below crash due to a platform bug.
+        // In this case, selecting a portion of text in the below call will trigger it.
+        // Fixed in Pie, for Oreo the workaround is to use the software layer.
+        //
+        //     java.lang.ArrayIndexOutOfBoundsException: length=19; index=-8
+        //     at android.text.DynamicLayout.getBlockIndex(DynamicLayout.java:646)
+        //         at android.widget.Editor.drawHardwareAccelerated(Editor.java:1695)
+        //         at android.widget.Editor.onDraw(Editor.java:1664)
+        //
+        // See: https://issuetracker.google.com/issues/67102093
+        //      https://android-review.googlesource.com/c/platform/frameworks/base/+/634929
+        if (Build.VERSION.SDK_INT < 28) {
+            ui.text.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
         }
 
         setBody(Select.WithoutTimestamps)
