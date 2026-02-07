@@ -94,6 +94,7 @@ import com.ubergeek42.WeechatAndroid.utils.wasCausedByEither
 import com.ubergeek42.WeechatAndroid.views.DrawerToggleFix
 import com.ubergeek42.WeechatAndroid.views.ToolbarController
 import com.ubergeek42.WeechatAndroid.views.hideSoftwareKeyboard
+import com.ubergeek42.WeechatAndroid.views.makeSystemBarsTransparent
 import com.ubergeek42.WeechatAndroid.views.onSystemBarsAndImeInsetsChanged
 import com.ubergeek42.WeechatAndroid.views.snackbar.BaseSnackbarBuilderProvider
 import com.ubergeek42.WeechatAndroid.views.snackbar.SnackbarBuilder
@@ -167,7 +168,8 @@ class WeechatActivity : AppCompatActivity(), CutePageChangeListener,
         ui = WeaselBinding.bind(uiWeasel)
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        ui.pager.rootView.onSystemBarsAndImeInsetsChanged { insets ->
+        makeSystemBarsTransparent()
+        ui.root.onSystemBarsAndImeInsetsChanged { insets ->
             ui.toolbarContainer.updatePadding(top = insets.top, left = insets.left, right = insets.right)
             ui.navigationPadding.updateDimensions(height = insets.bottom)
             ui.pager.updateMargins(bottom = insets.bottom)
