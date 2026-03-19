@@ -1,0 +1,7 @@
+* Use snackbars for error messages
+* Include full traceback with errors when available
+* Show more extensive error details when file upload fails
+* Support themed app icons
+* Target Android API 35
+* Drop support for Android API below 26
+* A few minor bug fixes and improvements

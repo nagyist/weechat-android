@@ -32,6 +32,15 @@ Pull requests are welcome—but please check with us on IRC before starting a su
 
 ### Changelog
 
+##### v1.11
+* Use snackbars for error messages
+* Include full traceback with errors when available
+* Show more extensive error details when file upload fails
+* Support themed app icons
+* Target Android API 35
+* Drop support for Android API below 26
+* A few minor bug fixes and improvements
+
 ##### v1.10.1
 * Fixed a rare crash when a line gets unhidden
 
